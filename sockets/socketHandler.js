@@ -5,7 +5,7 @@ const Room = require("../models/Room");
 const GameResult = require("../models/GameResult");
 const User = require("../models/User");
 
-// Room mapping: roomId → player sockets
+// Room mapping
 const roomPlayers = {};
 
 function socketHandler(server) {
