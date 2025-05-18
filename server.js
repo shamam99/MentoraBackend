@@ -29,8 +29,9 @@ app.use('/user', require('./routes/userRoutes'));
 app.use('/rooms', require('./routes/roomRoutes'));
 app.use("/games", require("./routes/gameRoutes"));
 app.use("/solo", require("./routes/soloRoutes"));
+app.use('/multiplayer', require('./routes/multiplayerRoutes'));
 app.use("/history", require("./routes/historyRoutes"));
-
+app.use("/questions", require("./routes/questionRoutes"));
 
 
 // Global error handler (must be last)
@@ -42,5 +43,5 @@ socketHandler(server);
 // Start server
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => {
-  console.log(`🚀 Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });

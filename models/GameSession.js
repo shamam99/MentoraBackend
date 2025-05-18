@@ -1,20 +1,20 @@
-// const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 
-// const gameSessionSchema = new mongoose.Schema(
-//   {
-//     roomId: { type: String, required: true },
-//     players: [
-//       {
-//         userId: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
-//         score: { type: Number, default: 0 },
-//         hearts: { type: Number, default: 5 },
-//         isWinner: { type: Boolean, default: false },
-//       },
-//     ],
-//     totalQuestions: { type: Number },
-//     endedAt: { type: Date, default: Date.now },
-//   },
-//   { timestamps: true }
-// );
+const gameSessionSchema = new mongoose.Schema({
+  roomId: { type: mongoose.Schema.Types.ObjectId, ref: 'Room', required: true },
+  players: [{
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    score: { type: Number, default: 0 },
+    correctAnswers: { type: Number, default: 0 }
+  }],
+  currentIndex: { type: Number, default: 0 },
+  totalQuestions: { type: Number },
+  questions: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Question'
+  }],
+  startedAt: { type: Date, default: Date.now },
+  endedAt: { type: Date }
+});
 
-// module.exports = mongoose.model("GameSession", gameSessionSchema);
+module.exports = mongoose.model('GameSession', gameSessionSchema);

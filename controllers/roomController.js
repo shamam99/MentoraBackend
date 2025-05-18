@@ -1,47 +1,35 @@
-const Room = require('../models/Room');
-// const RoomUser = require('../models/RoomUser');
-const { successResponse, errorResponse } = require('../utils/response');
-const { generatePinCode } = require('../utils/roomUtils');
-
+const Room = require("../models/Room");
+const { generatePinCode } = require("../utils/pinGenerator");
+const { successResponse, errorResponse } = require("../utils/response");
 
 exports.createRoom = async (req, res) => {
   try {
-    const userId = req.user.userId; // From JWT middleware
-    const pinCode = await generatePinCode();
+    const { userId, mode } = req.body;
+
+    if (!userId || !mode) {
+      return errorResponse(res, "Missing userId or mode");
+    }
+
+    const isSolo = mode === "solo";
+    const pinCode = isSolo ? null : generatePinCode();
 
     const room = await Room.create({
-      creator: userId,
-      pinCode,
-      players: [{ userId }]
+      hostUser: userId,
+      players: [userId],
+      isSolo,
+      pinCode: pinCode || undefined,
+      status: "waiting",
+      createdAt: new Date()
     });
 
-    return successResponse(res, 'Room created successfully', { room });
+    return successResponse(res, "Room created successfully", {
+      roomId: room._id,
+      pinCode: room.pinCode,
+      status: room.status,
+      isSolo: room.isSolo
+    });
   } catch (err) {
-    return errorResponse(res, 'Failed to create room', 500, err.message);
+    console.error("Create Room Error:", err);
+    return errorResponse(res, "Failed to create room", 500);
   }
 };
-
-/**
- * Join a room by PIN code
- */
-exports.joinRoomByPin = async (req, res) => {
-    try {
-      const { pinCode } = req.body;
-      const userId = req.user.userId;
-  
-      const room = await Room.findOne({ pinCode });
-      if (!room) {
-        return errorResponse(res, 'Room not found with this PIN code', 404);
-      }
-  
-      const alreadyJoined = await Room.findOne({ userId, roomId: room._id });
-      if (alreadyJoined) {
-        return successResponse(res, 'You are already in this room', { room });
-      }
-  
-      await Room.create({ roomId: room._id, userId });
-      return successResponse(res, 'Joined room successfully', { room });
-    } catch (err) {
-      return errorResponse(res, 'Failed to join room', 500, err);
-    }
-  };

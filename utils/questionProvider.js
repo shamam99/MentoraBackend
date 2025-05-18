@@ -1,15 +1,15 @@
 const staticQuestions = require('../data/questions');
 
 /**
- * Get a set of questions
- * For now: from static JSON
- * Later: fetch from external model/API
- * @param {number} count 
- * @returns {Array}
+ * Utility to fetch a set of static questions
+ * 
+ * @param {number} count - Number of questions to retrieve
+ * @returns {Array<Object>} - Array of question objects
  */
-const getQuestions = (count = 5) => {
+
+function getQuestions(count = 5) {
   const shuffled = [...staticQuestions].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
-};
+}
 
 module.exports = { getQuestions };

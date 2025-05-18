@@ -4,13 +4,9 @@
  * @returns {string}
  */
 function generatePinCode(length = 6) {
-    const characters = '0123456789';
-    let result = '';
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * characters.length));
-    }
-    return result;
-  }
+    const digits = '0123456789';
+    return Array.from({ length }, () => digits[Math.floor(Math.random() * digits.length)]).join('');
+  }  
   
   module.exports = { generatePinCode };
   
