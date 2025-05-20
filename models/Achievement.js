@@ -13,7 +13,7 @@ const achievementSchema = new mongoose.Schema({
   condition: {
     type: {
       type: String,
-      enum: ['streak', 'score', 'gamesPlayed'],
+      enum: ['streak', 'score', 'gamesPlayed', 'filesUploaded', 'friendsAdded'],
       required: true,
     },
     value: {

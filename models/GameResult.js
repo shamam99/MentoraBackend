@@ -35,4 +35,3 @@ const gameResultSchema = new mongoose.Schema({
 module.exports = mongoose.model('GameResult', gameResultSchema);
 
 
-// where to save the score of the Q for each user?? please think of this to see if something is missing also 

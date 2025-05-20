@@ -50,9 +50,14 @@ exports.saveMultiplayerGameResult = async (req, res) => {
   
       const user = await User.findById(userId);
       if (user) {
-        user.streak += 1;
-        user.hearts += 1;
+        const { updateStreak } = require("../utils/streakUtils");
+        updateStreak(user);
+        user.hearts += 1;        
         await user.save();
+        const unlocked = await checkAndUnlockAchievements(userId, {
+          streak: user.streak,
+          gamesPlayed: await GameResult.countDocuments({ playerId: userId }),
+        });
       }
   
       return res.status(200).json({

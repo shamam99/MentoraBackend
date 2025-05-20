@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const questionController = require("../controllers/questionController");
+const {submitQuestions} = require("../controllers/questionController");
 const authenticateUser = require("../middlewares/authenticateUser");
 
 /**
@@ -8,6 +8,8 @@ const authenticateUser = require("../middlewares/authenticateUser");
  * @desc  Cache parsed questions (solo or multiplayer) in memory
  * @access Private
  */
-router.post("/submit", authenticateUser, questionController.submitQuestions); 
+router.post("/submit", authenticateUser, submitQuestions); 
+// router.post('/save', authenticateUser, saveQuestion);
+// router.get('/saved', authenticateUser, getSavedQuestions);
 
 module.exports = router;

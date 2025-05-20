@@ -25,6 +25,10 @@ const userSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  lastStreakDate: {
+    type: Date,
+    default: null,
+  },  
   achievements: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Achievement',

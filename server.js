@@ -32,6 +32,8 @@ app.use("/solo", require("./routes/soloRoutes"));
 app.use('/multiplayer', require('./routes/multiplayerRoutes'));
 app.use("/history", require("./routes/historyRoutes"));
 app.use("/questions", require("./routes/questionRoutes"));
+app.use("/achievements", require("./routes/achievementRoutes"));
+
 
 
 // Global error handler (must be last)

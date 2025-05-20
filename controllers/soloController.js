@@ -3,6 +3,7 @@ const GameResult = require("../models/GameResult");
 const User = require("../models/User");
 const staticQuestions = require("../data/questions");
 const Question = require("../models/Question");
+const { checkAndUnlockAchievements } = require("../utils/achievementUtils"); 
 
 exports.startSoloGame = async (req, res) => {
   try {
@@ -75,9 +76,14 @@ exports.submitSoloAnswer = async (req, res) => {
     // Update user stats (optional bonus)
     const user = await User.findById(userId);
     if (user) {
-      user.streak += 1;
-      user.hearts += 1; // bonus
+      const { updateStreak } = require("../utils/streakUtils");
+      updateStreak(user);
+      user.hearts += 1;
       await user.save();
+      const unlocked = await checkAndUnlockAchievements(userId, {
+        streak: user.streak,
+        gamesPlayed: await GameResult.countDocuments({ playerId: userId }),
+      });
     }
 
     // Update room status
