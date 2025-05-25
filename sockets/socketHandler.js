@@ -152,18 +152,11 @@ function socketHandler(server) {
           return socket.emit("soloError", { message: "No questions uploaded yet" });
         }
 
-        const formattedQuestions = rawQuestions.map((q, i) => {
-          const rawChoices = (q.choices || []).map(c => typeof c === "string" ? c : (c?.answer || ""));
-          
-          const shuffled = [...rawChoices].sort(() => Math.random() - 0.5);
-        
-          return {
-            question: q.question || q.statement || `Untitled #${i}`,
-            choices: shuffled,
-            correct: typeof q.correct === "string" ? q.correct : ""
-          };
-        });
-        
+        const formattedQuestions = questions.map(q => ({
+          questionText: q.statement || q.question || "Untitled",
+          choices: ["True", "False"],
+          correct: q.is_true ? "True" : "False"
+        }));
 
         const room = await Room.create({
           hostUser: userId,
